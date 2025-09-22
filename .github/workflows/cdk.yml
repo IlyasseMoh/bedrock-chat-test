@@ -20,12 +20,11 @@ jobs:
       - name: Synthesize BedrockChatStack
         working-directory: cdk
         run: |
-          cd cdk
           npm ci
           npx cdk synth BedrockChatStack > BedrockChatStack.template.yaml
           ls -lh BedrockChatStack.template.json
       - name: Upload template
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: bedrockchat-template
           path: cdk/BedrockChatStack.template.json
