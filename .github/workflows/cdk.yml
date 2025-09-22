@@ -16,18 +16,19 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18.x"
+          node-version: "20.x"
       - name: Synthesize BedrockChatStack
         working-directory: cdk
         run: |
           npm ci
-          npx cdk synth BedrockChatStack > BedrockChatStack.template.yaml
-          ls -lh BedrockChatStack.template.json
+          npx cdk synth BedrockChatStack
+          ls -lh cdk.out/        
       - name: Upload template
         uses: actions/upload-artifact@v4
         with:
           name: bedrockchat-template
-          path: cdk/BedrockChatStack.template.json
+          path: cdk/cdk.out/BedrockChatStack.template.json
+        
   cdk-test:
     runs-on: ubuntu-latest
     steps:
