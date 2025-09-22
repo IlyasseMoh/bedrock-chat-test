@@ -20,7 +20,7 @@ jobs:
       - run: |
           cd cdk
           npm ci
-          npx cdk synth
+          npx cdk synth BedrockChatStack
   cdk-test:
     runs-on: ubuntu-latest
     steps:
