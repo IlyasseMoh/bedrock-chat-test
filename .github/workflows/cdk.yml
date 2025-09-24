@@ -19,34 +19,19 @@ jobs:
         with:
           node-version: "20.x"
 
-      - name: Synthesize bootstrap
+      - name: Synthesize BedrockChatStack
         working-directory: cdk
         run: |
           npm ci
           npx cdk synth BedrockChatStack
-          ls -lh cdk.out/   
+          ls -lh cdk.out/
           cat cdk.out/BedrockChatStack.assets.json     
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install cf2tf
-        run: |
-          pip install cf2tf
-
-      - name: Convert CFN to Terraform
-        working-directory: cdk
-        run: |
-          cf2tf cdk.out/BedrockChatStack.assets.json > main.tf
-          ls -lh main.tf
 
       - name: Upload Terraform
         uses: actions/upload-artifact@v4
         with:
           name: terraform-iac
-          path: cdk/main.tf
+          path: cdk/cdk.out/BedrockChatStack.assets.json 
 
   cdk-test:
     runs-on: ubuntu-latest
