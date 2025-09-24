@@ -1,0 +1,32 @@
+name: Generate Bedrock Chat Template
+
+on: [workflow_dispatch]
+
+jobs:
+  synth:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Cloner le repo
+      - uses: actions/checkout@v3
+
+      # 2. Installer Node.js
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # 3. Installer dépendances CDK
+      - run: npm ci
+        working-directory: cdk
+
+      # 4. Installer CDK + ts-node globalement
+      - run: npm install -g aws-cdk typescript ts-node
+
+      # 5. Générer le template
+      - run: cdk synth > template.json
+        working-directory: cdk
+
+      # 6. Upload du template comme artifact
+      - uses: actions/upload-artifact@v3
+        with:
+          name: bedrock-chat-template
+          path: cdk/template.json

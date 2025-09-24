@@ -13,14 +13,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18.x"
-      - run: |
-          cd cdk
+          node-version: "20.x"
+
+      - name: Synthesize BedrockChatStack
+        working-directory: cdk
+        run: |
           npm ci
-          npx cdk synth
+          npx cdk synth BedrockChatStack
+          ls -lh cdk.out/
+          cat cdk.out/BedrockChatStack.assets.json     
+
+      - name: Upload Terraform
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-iac
+          path: cdk/cdk.out/BedrockChatStack.assets.json 
+
   cdk-test:
     runs-on: ubuntu-latest
     steps:
