@@ -23,8 +23,9 @@ jobs:
         working-directory: cdk
         run: |
           npm ci
-          npx cdk synth bootstrap
-          ls -lh cdk.out/        
+          npx cdk synth BedrockChatStack
+          ls -lh cdk.out/   
+          cat cdk.out/BedrockChatStack.assets.json     
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -38,7 +39,7 @@ jobs:
       - name: Convert CFN to Terraform
         working-directory: cdk
         run: |
-          cf2tf cdk.out/bootstrap.template.json > main.tf
+          cf2tf cdk.out/BedrockChatStack.assets.json > main.tf
           ls -lh main.tf
 
       - name: Upload Terraform
